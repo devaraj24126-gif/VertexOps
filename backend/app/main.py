@@ -4,7 +4,8 @@ from sqlalchemy import text
 from app.api.auth import router as auth_router
 from app.database.base import Base
 from app.database.database import engine
-from app.models import User
+from app.models import User, Ticket
+from app.api.tickets import router as ticket_router
 
 app = FastAPI(
     title="VertexOps API",
@@ -15,6 +16,7 @@ app = FastAPI(
 Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
+app.include_router(ticket_router)
 
 
 @app.get("/")
