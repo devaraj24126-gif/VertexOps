@@ -11,6 +11,7 @@ from app.crud.ticket import (
     get_all_tickets,
     assign_ticket,
     update_ticket_status,
+    search_tickets,
 )
 from app.database.database import get_db
 from app.models.user import User
@@ -116,3 +117,22 @@ def update_status(
         )
 
     return ticket
+
+
+@router.get(
+    "/search",
+    response_model=list[TicketResponse],
+)
+def search(
+    status: str | None = None,
+    priority: str | None = None,
+    category: str | None = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin),
+):
+    return search_tickets(
+        db,
+        status,
+        priority,
+        category,
+    )

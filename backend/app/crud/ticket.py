@@ -83,3 +83,23 @@ def update_ticket_status(
     db.refresh(ticket)
 
     return ticket
+
+
+def search_tickets(
+    db: Session,
+    status: str | None = None,
+    priority: str | None = None,
+    category: str | None = None,
+):
+    query = db.query(Ticket)
+
+    if status:
+        query = query.filter(Ticket.status == status)
+
+    if priority:
+        query = query.filter(Ticket.priority == priority)
+
+    if category:
+        query = query.filter(Ticket.category == category)
+
+    return query.order_by(Ticket.id).all()
