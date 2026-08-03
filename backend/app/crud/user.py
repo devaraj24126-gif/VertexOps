@@ -81,3 +81,55 @@ def get_user_by_email(db: Session, email: str):
         .filter(User.email == email)
         .first()
     )
+
+
+
+def get_all_users(db: Session):
+    return (
+        db.query(User)
+        .order_by(User.id)
+        .all()
+    )
+
+
+def update_user_role(
+    db: Session,
+    user_id: int,
+    role: str,
+):
+    user = (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+
+    if user is None:
+        return None
+
+    user.role = role
+
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def update_user_active(
+    db: Session,
+    user_id: int,
+    is_active: bool,
+):
+    user = (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+
+    if user is None:
+        return None
+
+    user.is_active = is_active
+
+    db.commit()
+    db.refresh(user)
+
+    return user

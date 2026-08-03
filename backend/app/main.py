@@ -6,6 +6,7 @@ from app.database.base import Base
 from app.database.database import engine
 from app.models import User, Ticket
 from app.api.tickets import router as ticket_router
+from app.api.users import router as users_router
 
 app = FastAPI(
     title="VertexOps API",
@@ -17,6 +18,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
 app.include_router(ticket_router)
+app.include_router(users_router)
 
 
 @app.get("/")
