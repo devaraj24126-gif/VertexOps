@@ -22,3 +22,17 @@ class TicketResponse(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+class TicketAssign(BaseModel):
+    assigned_to: int
+
+class TicketStatusUpdate(BaseModel):
+    status: str = Field(
+        ...,
+        examples=[
+            "OPEN",
+            "IN_PROGRESS",
+            "RESOLVED",
+            "CLOSED",
+        ],
+    )
