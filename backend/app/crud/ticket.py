@@ -29,18 +29,38 @@ def get_my_tickets(
     db: Session,
     user_id: int,
 ):
-    return (
+    tickets = (
         db.query(Ticket)
         .filter(Ticket.created_by == user_id)
         .all()
     )
 
+    for ticket in tickets:
+        ticket.assigned_to_name = (
+            ticket.assigned_to_user.full_name
+            if ticket.assigned_to_user
+            else None
+        )
+
+    return tickets
+
+
 def get_all_tickets(db: Session):
-    return (
+    tickets = (
         db.query(Ticket)
         .order_by(Ticket.created_at.desc())
         .all()
     )
+
+    for ticket in tickets:
+        ticket.assigned_to_name = (
+            ticket.assigned_to_user.full_name
+            if ticket.assigned_to_user
+            else None
+        )
+
+    return tickets
+
 
 def assign_ticket(
     db: Session,
@@ -61,7 +81,14 @@ def assign_ticket(
     db.commit()
     db.refresh(ticket)
 
+    ticket.assigned_to_name = (
+        ticket.assigned_to_user.full_name
+        if ticket.assigned_to_user
+        else None
+    )
+
     return ticket
+
 
 def update_ticket_status(
     db: Session,
@@ -81,6 +108,12 @@ def update_ticket_status(
 
     db.commit()
     db.refresh(ticket)
+
+    ticket.assigned_to_name = (
+        ticket.assigned_to_user.full_name
+        if ticket.assigned_to_user
+        else None
+    )
 
     return ticket
 
@@ -102,4 +135,13 @@ def search_tickets(
     if category:
         query = query.filter(Ticket.category == category)
 
-    return query.order_by(Ticket.id).all()
+    tickets = query.order_by(Ticket.id).all()
+
+    for ticket in tickets:
+        ticket.assigned_to_name = (
+            ticket.assigned_to_user.full_name
+            if ticket.assigned_to_user
+            else None
+        )
+
+    return tickets

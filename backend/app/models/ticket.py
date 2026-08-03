@@ -7,6 +7,7 @@ from sqlalchemy import (
     String,
     Text,
 )
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.database.base import Base
@@ -58,6 +59,17 @@ class Ticket(Base):
         Integer,
         ForeignKey("users.id"),
         nullable=True,
+    )
+
+    # Relationships
+    created_by_user = relationship(
+        "User",
+        foreign_keys=[created_by],
+    )
+
+    assigned_to_user = relationship(
+        "User",
+        foreign_keys=[assigned_to],
     )
 
     created_at = Column(
