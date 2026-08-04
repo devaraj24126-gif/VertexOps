@@ -1,4 +1,6 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import Footer from "../components/Footer/Footer";
+import "./MainLayout.css";
 
 function MainLayout() {
   const navigate = useNavigate();
@@ -15,40 +17,65 @@ function MainLayout() {
   };
 
   return (
-    <div>
-      <nav
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-          padding: "15px",
-          borderBottom: "1px solid #ccc",
-        }}
-      >
-        {role === "ADMIN" && (
-          <>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/admin-tickets">Admin Tickets</Link>
-            <Link to="/users">Users</Link>
-          </>
-        )}
+    <div className="layout">
 
-        <Link to="/tickets">My Tickets</Link>
+      <nav className="navbar glass">
 
-        <Link to="/profile">Profile</Link>
+        <div className="nav-left">
 
-        <span style={{ marginLeft: "auto" }}>
-          Welcome, {fullName}
-        </span>
+          <div className="logo">
+            ⚡ VertexOps
+          </div>
 
-        <button onClick={logout}>
-          Logout
-        </button>
+          {role === "ADMIN" && (
+            <>
+              <NavLink to="/dashboard">
+                Dashboard
+              </NavLink>
+
+              <NavLink to="/admin-tickets">
+                Tickets
+              </NavLink>
+
+              <NavLink to="/users">
+                Users
+              </NavLink>
+            </>
+          )}
+
+          <NavLink to="/tickets">
+            My Tickets
+          </NavLink>
+
+          <NavLink to="/profile">
+            Profile
+          </NavLink>
+
+        </div>
+
+        <div className="nav-right">
+
+          <span>
+            Welcome, {fullName}
+          </span>
+
+          <button
+            className="btn logout-btn"
+            onClick={logout}
+          >
+            Logout
+          </button>
+
+        </div>
+
       </nav>
 
-      <div style={{ padding: "20px" }}>
+      <main className="content fade-up">
         <Outlet />
-      </div>
+      </main>
+
+      <Footer />
+
     </div>
   );
 }

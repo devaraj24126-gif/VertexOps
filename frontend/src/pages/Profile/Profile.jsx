@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { getCurrentUser } from "../../services/authService";
+import { toast } from "react-toastify";
+
+import "./Profile.css";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -14,7 +17,7 @@ function Profile() {
       setUser(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load profile");
+      toast.error("Failed to load profile");
     }
   };
 
@@ -23,42 +26,58 @@ function Profile() {
   }
 
   return (
-    <div>
-      <h1>My Profile</h1>
+    <div className="profile-page">
+      <h1>👤 My Profile</h1>
 
-      <table border="1" cellPadding="10">
-        <tbody>
-          <tr>
-            <td><strong>ID</strong></td>
-            <td>{user.id}</td>
-          </tr>
+      <div className="profile-card glass">
+        <table className="profile-table">
+          <tbody>
+            <tr>
+              <td className="profile-label">ID</td>
+              <td>{user.id}</td>
+            </tr>
 
-          <tr>
-            <td><strong>Full Name</strong></td>
-            <td>{user.full_name}</td>
-          </tr>
+            <tr>
+              <td className="profile-label">Full Name</td>
+              <td>{user.full_name}</td>
+            </tr>
 
-          <tr>
-            <td><strong>Username</strong></td>
-            <td>{user.username}</td>
-          </tr>
+            <tr>
+              <td className="profile-label">Username</td>
+              <td>{user.username}</td>
+            </tr>
 
-          <tr>
-            <td><strong>Email</strong></td>
-            <td>{user.email}</td>
-          </tr>
+            <tr>
+              <td className="profile-label">Email</td>
+              <td>{user.email}</td>
+            </tr>
 
-          <tr>
-            <td><strong>Role</strong></td>
-            <td>{user.role}</td>
-          </tr>
+            <tr>
+              <td className="profile-label">Role</td>
+              <td>
+                <span className="role-badge">
+                  {user.role}
+                </span>
+              </td>
+            </tr>
 
-          <tr>
-            <td><strong>Active</strong></td>
-            <td>{user.is_active ? "Yes" : "No"}</td>
-          </tr>
-        </tbody>
-      </table>
+            <tr>
+              <td className="profile-label">Status</td>
+              <td>
+                <span
+                  className={
+                    user.is_active
+                      ? "status-active"
+                      : "status-inactive"
+                  }
+                >
+                  {user.is_active ? "Active" : "Inactive"}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

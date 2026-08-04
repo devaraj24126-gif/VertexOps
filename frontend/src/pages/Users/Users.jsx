@@ -5,6 +5,9 @@ import {
   updateUserStatus,
 } from "../../services/userService";
 import { registerUser } from "../../services/authService";
+import { toast } from "react-toastify";
+
+import "./Users.css";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -20,7 +23,7 @@ function Users() {
       setUsers(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load users");
+      toast.error("Failed to load users");
     }
   };
 
@@ -39,7 +42,7 @@ function Users() {
         password,
       });
 
-      alert("User created successfully!");
+      toast.success("User created successfully!");
 
       setFullName("");
       setEmail("");
@@ -50,11 +53,10 @@ function Users() {
     } catch (error) {
       console.error(error);
 
-      if (error.response) {
-        console.log(error.response.data);
-        alert(JSON.stringify(error.response.data, null, 2));
+      if (error.response?.data?.detail) {
+        toast.error(error.response.data.detail);
       } else {
-        alert(error.message);
+        toast.error("Failed to create user");
       }
     }
   };
@@ -62,34 +64,46 @@ function Users() {
   const changeRole = async (id, role) => {
     try {
       await updateUserRole(id, role);
+
       await loadUsers();
-      alert("Role updated!");
+
+      toast.success("Role updated successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to update role");
+      toast.error("Failed to update role");
     }
   };
 
   const toggleActive = async (id, isActive) => {
     try {
       await updateUserStatus(id, !isActive);
+
       await loadUsers();
-      alert("User status updated!");
+
+      toast.success(
+        !isActive
+          ? "User activated successfully!"
+          : "User deactivated successfully!"
+      );
     } catch (error) {
       console.error(error);
-      alert("Failed to update status");
+      toast.error("Failed to update user status");
     }
   };
 
   return (
-    <div>
-      <h1>User Management</h1>
+    <div className="users-page">
 
-      <hr />
+      <h1>👥 User Management</h1>
 
-      <h2>Register New User</h2>
+      <form
+        className="users-form glass"
+        onSubmit={handleRegister}
+        autoComplete="off"
+      >
 
-      <form onSubmit={handleRegister} autoComplete="off">
+        <h2>Register New User</h2>
+
         <input
           type="text"
           placeholder="Full Name"
@@ -98,9 +112,6 @@ function Users() {
           onChange={(e) => setFullName(e.target.value)}
           required
         />
-
-        <br />
-        <br />
 
         <input
           type="email"
@@ -111,9 +122,6 @@ function Users() {
           required
         />
 
-        <br />
-        <br />
-
         <input
           type="text"
           placeholder="Username"
@@ -122,9 +130,6 @@ function Users() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-
-        <br />
-        <br />
 
         <input
           type="password"
@@ -135,42 +140,71 @@ function Users() {
           required
         />
 
-        <br />
-        <br />
-
         <button type="submit">
           Create User
         </button>
+
       </form>
 
-      <hr />
+      <table className="users-table glass">
 
-      <table border="1" cellPadding="10">
         <thead>
+
           <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Username</th>
             <th>Role</th>
-            <th>Active</th>
+            <th>Status</th>
             <th>Role Action</th>
             <th>Status Action</th>
           </tr>
+
         </thead>
 
         <tbody>
+
           {users.map((user) => (
+
             <tr key={user.id}>
+
               <td>{user.id}</td>
+
               <td>{user.full_name}</td>
+
               <td>{user.email}</td>
+
               <td>{user.username}</td>
-              <td>{user.role}</td>
-              <td>{user.is_active ? "Yes" : "No"}</td>
 
               <td>
+                <span
+                  className={
+                    user.role === "ADMIN"
+                      ? "role-admin"
+                      : "role-employee"
+                  }
+                >
+                  {user.role}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  className={
+                    user.is_active
+                      ? "active"
+                      : "inactive"
+                  }
+                >
+                  {user.is_active ? "Active" : "Inactive"}
+                </span>
+              </td>
+
+              <td>
+
                 <button
+                  className="action-btn"
                   onClick={() =>
                     changeRole(
                       user.id,
@@ -180,23 +214,39 @@ function Users() {
                     )
                   }
                 >
-                  Make {user.role === "ADMIN" ? "Employee" : "Admin"}
+                  {user.role === "ADMIN"
+                    ? "Make Employee"
+                    : "Make Admin"}
                 </button>
+
               </td>
 
               <td>
+
                 <button
+                  className="action-btn"
                   onClick={() =>
-                    toggleActive(user.id, user.is_active)
+                    toggleActive(
+                      user.id,
+                      user.is_active
+                    )
                   }
                 >
-                  {user.is_active ? "Deactivate" : "Activate"}
+                  {user.is_active
+                    ? "Deactivate"
+                    : "Activate"}
                 </button>
+
               </td>
+
             </tr>
+
           ))}
+
         </tbody>
+
       </table>
+
     </div>
   );
 }

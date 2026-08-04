@@ -1,0 +1,33 @@
+:root{
+
+  --bg1:#061826;
+  --bg2:#0b4f6c;
+  --bg3:#11c5bf;
+
+  --bg-gradient:
+  radial-gradient(circle at top left,#11c5bf33,transparent 30%),
+  radial-gradient(circle at bottom right,#00d9ff22,transparent 35%),
+  linear-gradient(135deg,#061826,#0b2f45,#0f6b78,#11c5bf);
+
+  --glass-bg:rgba(255,255,255,.08);
+
+  --glass-border:rgba(255,255,255,.20);
+
+  --glass-shadow:
+  0 8px 32px rgba(0,0,0,.35);
+
+  --glass-blur:22px;
+
+  --primary:#2ef2ff;
+
+  --accent:#00ffd0;
+
+  --text:#ffffff;
+
+  --text-light:#d6f6ff;
+
+  --radius:28px;
+
+  --transition:.35s ease;
+
+}

@@ -1,0 +1,191 @@
+.users-page h1{
+    color:white;
+    margin-bottom:25px;
+    font-size:38px;
+}
+
+.users-form{
+    padding:30px;
+    margin-bottom:35px;
+}
+
+.users-form h2{
+    color:white;
+    margin-bottom:20px;
+}
+
+.users-form input{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:18px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    color:white;
+
+    border-radius:14px;
+
+    backdrop-filter:blur(15px);
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.users-form input::placeholder{
+
+    color:#cfefff;
+
+}
+
+.users-form input:focus{
+
+    border:1px solid #2ef2ff;
+
+    box-shadow:0 0 18px rgba(46,242,255,.35);
+
+}
+
+.users-form button{
+
+    width:220px;
+
+    padding:14px;
+
+    background:linear-gradient(
+        135deg,
+        #00d9ff,
+        #00ffd0
+    );
+
+    color:#00141f;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+}
+
+.users-form button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 20px rgba(0,255,208,.5);
+
+}
+
+.users-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.06);
+
+    backdrop-filter:blur(20px);
+
+}
+
+.users-table th{
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    padding:15px;
+
+}
+
+.users-table td{
+
+    color:white;
+
+    padding:15px;
+
+}
+
+.users-table tr{
+
+    transition:.3s;
+
+}
+
+.users-table tr:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.role-admin{
+
+    color:#00ffd0;
+
+    font-weight:bold;
+
+}
+
+.role-employee{
+
+    color:#ffd54a;
+
+    font-weight:bold;
+
+}
+
+.active{
+
+    color:#22c55e;
+
+    font-weight:bold;
+
+}
+
+.inactive{
+
+    color:#ff6b6b;
+
+    font-weight:bold;
+
+}
+
+.action-btn{
+
+    padding:10px 16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.10);
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.action-btn:hover{
+
+    background:#00d9ff;
+
+    color:#00141f;
+
+}

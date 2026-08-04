@@ -1,0 +1,235 @@
+.ticket-page h1 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 38px;
+}
+
+.ticket-form {
+    padding: 30px;
+    margin-bottom: 35px;
+}
+
+.ticket-form h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.ticket-form input,
+.ticket-form textarea,
+.ticket-form select {
+
+    width: 100%;
+    padding: 14px;
+
+    margin-bottom: 18px;
+
+    background: rgba(255,255,255,.08);
+
+    border: 1px solid rgba(255,255,255,.15);
+
+    color: white;
+
+    border-radius: 14px;
+
+    backdrop-filter: blur(15px);
+
+    outline: none;
+
+    transition: .3s;
+
+}
+
+.ticket-form input:focus,
+.ticket-form textarea:focus,
+.ticket-form select:focus{
+
+    border:1px solid #2ef2ff;
+
+    box-shadow:0 0 18px rgba(46,242,255,.35);
+
+}
+
+.ticket-form textarea {
+
+    height: 120px;
+
+    resize: none;
+
+}
+
+.ticket-form input::placeholder,
+.ticket-form textarea::placeholder {
+
+    color: #cfefff;
+
+}
+
+/* Dropdown */
+
+.ticket-form select {
+
+    background: rgba(255,255,255,.08);
+
+    color: white;
+
+    cursor: pointer;
+
+}
+
+.ticket-form option {
+
+    background: #0b2f45;
+
+    color: white;
+
+}
+
+/* Create Button */
+
+.ticket-form button {
+
+    width: 220px;
+
+    padding: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #00d9ff,
+        #00ffd0
+    );
+
+    color: #00141f;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition: .35s;
+
+}
+
+.ticket-form button:hover {
+
+    transform: translateY(-3px) scale(1.04);
+
+    box-shadow: 0 0 25px rgba(0,255,208,.55);
+
+}
+
+.ticket-form button:active {
+
+    transform: scale(.96);
+
+}
+
+/* Table */
+
+.ticket-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.06);
+
+    backdrop-filter: blur(20px);
+
+}
+
+.ticket-table th {
+
+    background: rgba(255,255,255,.12);
+
+    color: white;
+
+    padding: 15px;
+
+}
+
+.ticket-table td {
+
+    padding: 15px;
+
+    color: white;
+
+}
+
+.ticket-table tr {
+
+    transition: .3s;
+
+}
+
+.ticket-table tr:hover {
+
+    background: rgba(255,255,255,.08);
+
+}
+
+/* Priority */
+
+.low {
+
+    color: #00ff99;
+
+    font-weight: bold;
+
+}
+
+.medium {
+
+    color: #ffd54a;
+
+    font-weight: bold;
+
+}
+
+.high {
+
+    color: #ff6b6b;
+
+    font-weight: bold;
+
+}
+
+/* Status */
+
+.open {
+
+    color: #00d9ff;
+
+    font-weight: bold;
+
+}
+
+.progress {
+
+    color: #ffb300;
+
+    font-weight: bold;
+
+}
+
+.resolved {
+
+    color: #22c55e;
+
+    font-weight: bold;
+
+}
+
+.closed {
+
+    color: #bbbbbb;
+
+    font-weight: bold;
+
+}

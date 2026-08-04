@@ -5,8 +5,10 @@ import {
   assignTicket,
   updateTicketStatus,
 } from "../../services/ticketService";
-
 import { getUsers } from "../../services/userService";
+import { toast } from "react-toastify";
+
+import "./AdminTickets.css";
 
 function AdminTickets() {
   const [tickets, setTickets] = useState([]);
@@ -25,7 +27,7 @@ function AdminTickets() {
       setTickets(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load tickets");
+      toast.error("Failed to load tickets");
     }
   };
 
@@ -33,15 +35,19 @@ function AdminTickets() {
     try {
       const data = await getUsers();
 
-      const employeeList = data.filter(
-        (user) => user.role === "EMPLOYEE"
+      setEmployees(
+        data.filter((user) => user.role === "EMPLOYEE")
       );
-
-      setEmployees(employeeList);
     } catch (error) {
       console.error(error);
+      toast.error("Failed to load employees");
     }
   };
+
+  useEffect(() => {
+    loadTickets();
+    loadEmployees();
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -52,115 +58,117 @@ function AdminTickets() {
       });
 
       setTickets(data);
+      toast.success("Search completed");
     } catch (error) {
       console.error(error);
-      alert("Search failed");
+      toast.error("Search failed");
     }
   };
 
   const handleAssign = async (ticketId) => {
+    const employeeId = selectedEmployee[ticketId];
+
+    if (!employeeId) {
+      toast.warning("Please select an employee");
+      return;
+    }
+
     try {
-      const employeeId = selectedEmployee[ticketId];
-
-      if (!employeeId) {
-        alert("Please select an employee");
-        return;
-      }
-
       await assignTicket(ticketId, Number(employeeId));
 
-      alert("Ticket assigned successfully!");
-
       await loadTickets();
+
+      toast.success("Ticket assigned successfully!");
     } catch (error) {
       console.error(error);
-      alert("Assignment failed");
+      toast.error("Assignment failed");
     }
   };
 
   const handleStatusUpdate = async (ticketId) => {
+    const status = selectedStatus[ticketId];
+
+    if (!status) {
+      toast.warning("Please select a status");
+      return;
+    }
+
     try {
-      const status = selectedStatus[ticketId];
-
-      if (!status) {
-        alert("Please select a status");
-        return;
-      }
-
       await updateTicketStatus(ticketId, status);
 
-      alert("Status updated successfully!");
-
       await loadTickets();
+
+      toast.success("Status updated successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to update status");
+      toast.error("Failed to update status");
     }
   };
 
-  useEffect(() => {
-    loadTickets();
-    loadEmployees();
-  }, []);
-
   return (
-    <div>
-      <h1>Admin Ticket Management</h1>
+    <div className="admin-page">
 
-      <h3>Employees Loaded: {employees.length}</h3>
+      <h1>🎫 Admin Ticket Management</h1>
 
-      <h2>Search Tickets</h2>
+      <h3>Employees Loaded : {employees.length}</h3>
 
-      <select
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-      >
-        <option value="">All Status</option>
-        <option value="OPEN">OPEN</option>
-        <option value="IN_PROGRESS">IN_PROGRESS</option>
-        <option value="RESOLVED">RESOLVED</option>
-        <option value="CLOSED">CLOSED</option>
-      </select>
+      <div className="search-card glass">
 
-      {" "}
+        <h2>Search Tickets</h2>
 
-      <select
-        value={priority}
-        onChange={(e) => setPriority(e.target.value)}
-      >
-        <option value="">All Priority</option>
-        <option value="LOW">LOW</option>
-        <option value="MEDIUM">MEDIUM</option>
-        <option value="HIGH">HIGH</option>
-      </select>
+        <div className="search-row">
 
-      {" "}
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="">All Status</option>
+            <option value="OPEN">OPEN</option>
+            <option value="IN_PROGRESS">IN PROGRESS</option>
+            <option value="RESOLVED">RESOLVED</option>
+            <option value="CLOSED">CLOSED</option>
+          </select>
 
-      <select
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="">All Categories</option>
-        <option value="Hardware">Hardware</option>
-        <option value="Software">Software</option>
-        <option value="Network">Network</option>
-      </select>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="">All Priority</option>
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+          </select>
 
-      {" "}
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            <option value="Hardware">Hardware</option>
+            <option value="Software">Software</option>
+            <option value="Network">Network</option>
+          </select>
 
-      <button onClick={handleSearch}>
-        Search
-      </button>
+          <button
+            className="primary-btn"
+            onClick={handleSearch}
+          >
+            Search
+          </button>
 
-      {" "}
+          <button
+            className="secondary-btn"
+            onClick={loadTickets}
+          >
+            Reset
+          </button>
 
-      <button onClick={loadTickets}>
-        Reset
-      </button>
+        </div>
 
-      <hr />
+      </div>
 
-      <table border="1" cellPadding="10">
+      <table className="admin-table glass">
+
         <thead>
           <tr>
             <th>ID</th>
@@ -178,13 +186,35 @@ function AdminTickets() {
         </thead>
 
         <tbody>
+
           {tickets.map((ticket) => (
+
             <tr key={ticket.id}>
+
               <td>{ticket.id}</td>
+
               <td>{ticket.title}</td>
-              <td>{ticket.priority}</td>
-              <td>{ticket.status}</td>
+
+              <td>
+                <span className={ticket.priority.toLowerCase()}>
+                  {ticket.priority}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  className={
+                    ticket.status === "IN_PROGRESS"
+                      ? "progress"
+                      : ticket.status.toLowerCase()
+                  }
+                >
+                  {ticket.status}
+                </span>
+              </td>
+
               <td>{ticket.category}</td>
+
               <td>{ticket.created_by}</td>
 
               <td>
@@ -192,6 +222,7 @@ function AdminTickets() {
               </td>
 
               <td>
+
                 <select
                   value={selectedEmployee[ticket.id] || ""}
                   onChange={(e) =>
@@ -212,19 +243,22 @@ function AdminTickets() {
                     </option>
                   ))}
                 </select>
+
               </td>
 
               <td>
+
                 <button
-                  onClick={() =>
-                    handleAssign(ticket.id)
-                  }
+                  className="action-btn"
+                  onClick={() => handleAssign(ticket.id)}
                 >
                   Assign
                 </button>
+
               </td>
 
               <td>
+
                 <select
                   value={selectedStatus[ticket.id] || ""}
                   onChange={(e) =>
@@ -236,25 +270,34 @@ function AdminTickets() {
                 >
                   <option value="">Select Status</option>
                   <option value="OPEN">OPEN</option>
-                  <option value="IN_PROGRESS">IN_PROGRESS</option>
+                  <option value="IN_PROGRESS">IN PROGRESS</option>
                   <option value="RESOLVED">RESOLVED</option>
                   <option value="CLOSED">CLOSED</option>
                 </select>
+
               </td>
 
               <td>
+
                 <button
+                  className="action-btn"
                   onClick={() =>
                     handleStatusUpdate(ticket.id)
                   }
                 >
                   Update
                 </button>
+
               </td>
+
             </tr>
+
           ))}
+
         </tbody>
+
       </table>
+
     </div>
   );
 }

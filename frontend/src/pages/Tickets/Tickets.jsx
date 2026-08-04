@@ -3,6 +3,9 @@ import {
   getMyTickets,
   createTicket,
 } from "../../services/ticketService";
+import { toast } from "react-toastify";
+
+import "./Tickets.css";
 
 function Tickets() {
   const [tickets, setTickets] = useState([]);
@@ -18,7 +21,7 @@ function Tickets() {
       setTickets(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load tickets");
+      toast.error("Failed to load tickets");
     }
   };
 
@@ -44,18 +47,22 @@ function Tickets() {
 
       await loadTickets();
 
-      alert("Ticket created successfully!");
+      toast.success("Ticket created successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to create ticket");
+      toast.error("Failed to create ticket");
     }
   };
 
   return (
-    <div>
-      <h1>My Tickets</h1>
+    <div className="ticket-page">
 
-      <form onSubmit={handleCreate}>
+      <h1>🎫 My Tickets</h1>
+
+      <form
+        className="ticket-form glass"
+        onSubmit={handleCreate}
+      >
         <h2>Create Ticket</h2>
 
         <input
@@ -67,9 +74,6 @@ function Tickets() {
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <br />
-        <br />
-
         <textarea
           placeholder="Description"
           value={description}
@@ -77,9 +81,6 @@ function Tickets() {
           required
           onChange={(e) => setDescription(e.target.value)}
         />
-
-        <br />
-        <br />
 
         <select
           value={priority}
@@ -90,9 +91,6 @@ function Tickets() {
           <option value="HIGH">HIGH</option>
         </select>
 
-        <br />
-        <br />
-
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -102,17 +100,16 @@ function Tickets() {
           <option value="Network">Network</option>
         </select>
 
-        <br />
-        <br />
-
-        <button type="submit">
+        <button
+          className="btn"
+          type="submit"
+        >
           Create Ticket
         </button>
       </form>
 
-      <hr />
+      <table className="ticket-table glass">
 
-      <table border="1" cellPadding="10">
         <thead>
           <tr>
             <th>ID</th>
@@ -127,13 +124,35 @@ function Tickets() {
         </thead>
 
         <tbody>
+
           {tickets.map((ticket) => (
+
             <tr key={ticket.id}>
+
               <td>{ticket.id}</td>
+
               <td>{ticket.title}</td>
+
               <td>{ticket.description}</td>
-              <td>{ticket.priority}</td>
-              <td>{ticket.status}</td>
+
+              <td>
+                <span className={ticket.priority.toLowerCase()}>
+                  {ticket.priority}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  className={
+                    ticket.status === "IN_PROGRESS"
+                      ? "progress"
+                      : ticket.status.toLowerCase()
+                  }
+                >
+                  {ticket.status}
+                </span>
+              </td>
+
               <td>{ticket.category}</td>
 
               <td>
@@ -143,10 +162,15 @@ function Tickets() {
               <td>
                 {new Date(ticket.created_at).toLocaleString()}
               </td>
+
             </tr>
+
           ))}
+
         </tbody>
+
       </table>
+
     </div>
   );
 }
