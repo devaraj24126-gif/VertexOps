@@ -3,12 +3,23 @@ from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
 
-DATABASE_URL = (
-    f"oracle+oracledb://{settings.DB_USERNAME}:"
-    f"{settings.DB_PASSWORD}"
-    f"@{settings.DB_HOST}:{settings.DB_PORT}"
-    f"/?service_name={settings.DB_SERVICE}"
-)
+
+
+# ----------------------------
+# Choose database automatically
+# ----------------------------
+
+if settings.DATABASE_URL:
+    
+    DATABASE_URL = settings.DATABASE_URL
+else:
+    
+    DATABASE_URL = (
+        f"oracle+oracledb://{settings.DB_USERNAME}:"
+        f"{settings.DB_PASSWORD}"
+        f"@{settings.DB_HOST}:{settings.DB_PORT}"
+        f"/?service_name={settings.DB_SERVICE}"
+    )
 
 engine = create_engine(
     DATABASE_URL,
