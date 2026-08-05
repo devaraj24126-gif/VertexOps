@@ -190,6 +190,24 @@ Employee account information.
 ![Employee Profile](screenshots/employee-profile.png)
 
 ---
+---
+
+## 📚 Interactive API Documentation
+
+VertexOps provides interactive API documentation powered by **FastAPI Swagger UI**, making it easy for developers to explore, understand, and test every available endpoint directly from the browser.
+
+### Features
+
+- Interactive Swagger UI
+- Test API endpoints without Postman
+- View request and response schemas
+- Built-in API documentation
+- Authentication-ready endpoints
+- Faster backend development and testing
+
+![Swagger API](screenshots/api.png)
+
+---
 
 # 🏗 System Architecture
 
